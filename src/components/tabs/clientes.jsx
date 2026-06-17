@@ -2,6 +2,9 @@ import { useContext, useState } from "react";
 import { Container, Table, Button, Modal, Form, Alert, Spinner } from "react-bootstrap";
 import { ClientesContext } from "../context/clientesContext";
 import { postClienteAPI, putClienteAPI, deleteClientePorIdAPI } from "../../services/clienteServices";
+import WithAuth from "../../seguranca/WithAuth";
+import { useNavigate } from "react-router-dom";
+import { trataErroAutenticacao } from "../../seguranca/trataErroAutenticacao";
 
 const EMPTY = { nome: "", email: "" };
 
@@ -18,6 +21,8 @@ const Clientes = () => {
     const [showConfirm, setShowConfirm] = useState(false);
     const [deletingId, setDeletingId] = useState(null);
     const [deleting, setDeleting] = useState(false);
+
+    const navigate = useNavigate();
 
     function openNew() {
         setEditing(null);
@@ -59,7 +64,9 @@ const Clientes = () => {
             await fetchClientes();
             setShow(false);
         } catch (err) {
-            setFormError(err.message);
+            if (!trataErroAutenticacao(err, navigate)) {
+                setFormError(err.message);
+            }
         } finally {
             setSaving(false);
         }
@@ -73,7 +80,9 @@ const Clientes = () => {
             await fetchClientes();
             setShowConfirm(false);
         } catch (err) {
-            alert(err.message);
+            if (!trataErroAutenticacao(err, navigate)) {
+                alert(err.message);
+            }
         } finally {
             setDeleting(false);
         }
@@ -166,4 +175,4 @@ const Clientes = () => {
     );
 };
 
-export default Clientes;
+export default WithAuth(Clientes);

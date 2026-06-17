@@ -5,6 +5,9 @@ import { ClientesContext } from "../context/clientesContext";
 import { FilmesContext } from "../context/filmesContext";
 import { postLocacaoAPI, putLocacaoAPI, deleteLocacaoPorIdAPI } from "../../services/locacaoServices";
 import { postItemLocacaoAPI, deleteItemLocacaoPorIdAPI } from "../../services/itemLocacaoServices";
+import WithAuth from "../../seguranca/WithAuth";
+import { useNavigate } from "react-router-dom";
+import { trataErroAutenticacao } from "../../seguranca/trataErroAutenticacao";
 
 const EMPTY = { cliente_id: "", data_locacao: "", data_devolucao: "" };
 
@@ -30,6 +33,8 @@ const Locacoes = () => {
     const [showConfirm, setShowConfirm] = useState(false);
     const [deletingId, setDeletingId] = useState(null);
     const [deleting, setDeleting] = useState(false);
+
+    const navigate = useNavigate();
 
     function nomeCliente(id) {
         return clientes.find(c => c.id === id)?.nome ?? id;
@@ -111,7 +116,8 @@ const Locacoes = () => {
         try {
             if (editing) {
                 const locacaoPayload = buildLocacaoPayload(editing);
-                const updated = await putLocacaoAPI(locacaoPayload);
+                const response = await putLocacaoAPI(locacaoPayload);
+                const updated = response.objeto;
 
                 if (!updated?.id) {
                     throw new Error(updated?.message ?? "O servidor não retornou a locação atualizada. Verifique o backend.");
@@ -130,7 +136,10 @@ const Locacoes = () => {
 
             } else {
                 const locacaoPayload = buildLocacaoPayload();
-                const created = await postLocacaoAPI(locacaoPayload);
+                const response = await postLocacaoAPI(locacaoPayload);
+                const created = response.objeto;
+
+                console.log(created.id)
 
                 if (!created?.id) {
                     throw new Error(created?.message ?? "O servidor não retornou a locação criada. Verifique o backend.");
@@ -140,13 +149,15 @@ const Locacoes = () => {
                     await postItemLocacaoAPI({ locacao_id: created.id, filme_id: i.filme_id });
                 }
             }
-            
+
             // Recarrega todos os relacionamentos chamando a função de fetch do Context
             await fetchLocacoes();
             setShow(false);
         } catch (err) {
-            console.error("Erro ao salvar locação:", err);
-            setFormError(err.message);
+            if (!trataErroAutenticacao(err, navigate)) {
+                console.error("Erro ao salvar locação:", err);
+                setFormError(err.message);
+            }
         } finally {
             setSaving(false);
         }
@@ -160,7 +171,9 @@ const Locacoes = () => {
             await fetchLocacoes();
             setShowConfirm(false);
         } catch (err) {
-            alert(err.message);
+            if (!trataErroAutenticacao(err, navigate)) {
+                alert(err.message);
+            }
         } finally {
             setDeleting(false);
         }
@@ -288,4 +301,4 @@ const Locacoes = () => {
     );
 };
 
-export default Locacoes;
+export default WithAuth(Locacoes);

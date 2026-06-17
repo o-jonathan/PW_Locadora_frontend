@@ -4,6 +4,9 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 //* Imports
 import { createBrowserRouter, RouterProvider } from 'react-router';
 //* Components
+import MenuPublico from './components/MenuPublico';
+import MenuPrivado from './components/MenuPrivado';
+import Login from './components/tabs/login';
 import Menu from './components/menu';
 import Home from './components/tabs/home';
 import Clientes from './components/tabs/clientes';
@@ -17,22 +20,36 @@ import { LocacoesProvider } from './components/context/locacoesContext';
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <Menu />,
+        element: <MenuPublico />,
         children: [
             {
                 index: true,
                 element: <Home />
             },
             {
-                path: "/clientes",
+                path: "/login",
+                element: <Login/>
+            }
+        ]
+    },
+    {
+        path: "/privado",
+        element: <MenuPrivado/>,
+        children: [
+            {
+                index: true,
+                element: <Home />
+            },
+            {
+                path: "clientes",
                 element: <Clientes />
             },
             {
-                path: "/filmes",
+                path: "filmes",
                 element: <Filmes />
             },
             {
-                path: "/locacoes",
+                path: "locacoes",
                 element: <Locacoes />
             }
         ]

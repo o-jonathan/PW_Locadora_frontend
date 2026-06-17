@@ -27,7 +27,9 @@ export function LocacoesProvider({ children }) {
             // Embute os itens dentro de cada locação
             const locacoesComItens = locacoesData.map(l => ({
                 ...l,
-                itemLocacoes: itensData.filter(i => i.locacao_id === l.id),
+                itemLocacoes: itensData.filter(
+                    i => String(i.locacao_id) === String(l.id)
+                ),
             }));
 
             setLocacoes(locacoesComItens);

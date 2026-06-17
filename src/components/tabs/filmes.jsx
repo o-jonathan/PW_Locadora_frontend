@@ -2,6 +2,9 @@ import { useContext, useState } from "react";
 import { Container, Table, Button, Modal, Form, Alert, Spinner } from "react-bootstrap";
 import { FilmesContext } from "../context/filmesContext";
 import { postFilmeAPI, putFilmeAPI, deleteFilmePorIdAPI } from "../../services/filmeServices";
+import WithAuth from "../../seguranca/WithAuth";
+import { useNavigate } from "react-router-dom";
+import { trataErroAutenticacao } from "../../seguranca/trataErroAutenticacao";
 
 const GENEROS = ["Ação", "Aventura", "Comédia", "Drama", "Ficção Científica", "Terror", "Romance", "Animação", "Documentário", "Suspense"];
 const EMPTY = { titulo: "", lancamento: "", genero: "" };
@@ -19,6 +22,8 @@ const Filmes = () => {
     const [showConfirm, setShowConfirm] = useState(false);
     const [deletingId, setDeletingId] = useState(null);
     const [deleting, setDeleting] = useState(false);
+
+    const navigate = useNavigate();
 
     function openNew() {
         setEditing(null);
@@ -60,7 +65,9 @@ const Filmes = () => {
             await fetchFilmes();
             setShow(false);
         } catch (err) {
-            setFormError(err.message);
+            if (!trataErroAutenticacao(err, navigate)) {
+                setFormError(err.message);
+            }
         } finally {
             setSaving(false);
         }
@@ -74,7 +81,9 @@ const Filmes = () => {
             await fetchFilmes();
             setShowConfirm(false);
         } catch (err) {
-            alert(err.message);
+            if (!trataErroAutenticacao(err, navigate)) {
+                alert(err.message);
+            }
         } finally {
             setDeleting(false);
         }
@@ -176,4 +185,4 @@ const Filmes = () => {
     );
 };
 
-export default Filmes;
+export default WithAuth(Filmes);

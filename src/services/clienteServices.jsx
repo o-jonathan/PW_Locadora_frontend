@@ -1,10 +1,13 @@
+import { getToken } from "../seguranca/Autenticacao";
 const BASE = `${process.env.REACT_APP_ENDERECO_API}/cliente`;
-const JSON_HEADERS = { "Content-Type": "application/json" };
 
 export const getClientesAPI = async () => {
     const response = await fetch(BASE, {
         method: "GET",
-        headers: JSON_HEADERS,
+        headers: {
+            "Content-Type": "application/json",
+            "authorization": getToken()
+        }
     });
     return response.json();
 };
@@ -12,7 +15,10 @@ export const getClientesAPI = async () => {
 export const getClientePorIdAPI = async (id) => {
     const response = await fetch(`${BASE}/${id}`, {
         method: "GET",
-        headers: JSON_HEADERS,
+        headers: {
+            "Content-Type": "application/json",
+            "authorization": getToken()
+        }
     });
     return response.json();
 };
@@ -20,7 +26,10 @@ export const getClientePorIdAPI = async (id) => {
 export const deleteClientePorIdAPI = async (id) => {
     const response = await fetch(`${BASE}/${id}`, {
         method: "DELETE",
-        headers: JSON_HEADERS,
+        headers: {
+            "Content-Type": "application/json",
+            "authorization": getToken()
+        }
     });
     return response.json();
 };
@@ -28,7 +37,10 @@ export const deleteClientePorIdAPI = async (id) => {
 export const postClienteAPI = async (object) => {
     const response = await fetch(BASE, {
         method: "POST",
-        headers: JSON_HEADERS,
+        headers: {
+            "Content-Type": "application/json",
+            "authorization": getToken()
+        },
         body: JSON.stringify(object),
     });
     return response.json();
@@ -37,7 +49,10 @@ export const postClienteAPI = async (object) => {
 export const putClienteAPI = async (object) => {
     const response = await fetch(BASE, {
         method: "PUT",
-        headers: JSON_HEADERS,
+        headers: {
+            "Content-Type": "application/json",
+            "authorization": getToken()
+        },
         body: JSON.stringify(object),
     });
     return response.json();
