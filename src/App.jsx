@@ -8,7 +8,7 @@ import MenuPublico from './components/MenuPublico';
 import MenuPrivado from './components/MenuPrivado';
 import Login from './components/tabs/login';
 import Cadastro from './components/tabs/cadastro';
-import Menu from './components/menu';
+// import Menu from './components/menu';
 import Home from './components/tabs/home';
 import Clientes from './components/tabs/clientes';
 import Filmes from './components/tabs/filmes';

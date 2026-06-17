@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { Container, Card, Form, Button, Alert, Spinner } from "react-bootstrap";
 
-import { gravaAutenticacao, getToken, getUsuario, logout } from "../../seguranca/Autenticacao";
+import { getUsuario, logout } from "../../seguranca/Autenticacao";
 
 const MeuPerfil = () => {
     const usuario = getUsuario();

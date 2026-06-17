@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { Container, Card, Form, Button, Alert, Spinner } from "react-bootstrap";
 
-import { gravaAutenticacao, getToken, getUsuario } from "../../seguranca/Autenticacao";
+import { gravaAutenticacao, getToken } from "../../seguranca/Autenticacao";
 
 const Cadastro = () => {
     const [nome, setNome] = useState("");
