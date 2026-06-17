@@ -49,9 +49,16 @@ const MenuPrivado = () => {
                             align="end"
                         >
                             {usuario ? (
-                                <NavDropdown.Item onClick={handleLogout}>
-                                    <i className="bi bi-person-fill-down" /> Logout
-                                </NavDropdown.Item>
+                                <>
+                                    <NavDropdown.Item className="nav-link">
+                                        <NavLink className="nav-link" to="/privado/meuperfil">
+                                            <i className="bi bi-person-fill" /> Meu Perfil
+                                        </NavLink>
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item className="nav-link" onClick={handleLogout}>
+                                        <i className="bi bi-person-fill-down" /> Logout
+                                    </NavDropdown.Item>
+                                </>
                             ) : (
                                 <NavDropdown.Item
                                     as={NavLink}

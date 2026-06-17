@@ -5,12 +5,13 @@ import { postFilmeAPI, putFilmeAPI, deleteFilmePorIdAPI } from "../../services/f
 import WithAuth from "../../seguranca/WithAuth";
 import { useNavigate } from "react-router-dom";
 import { trataErroAutenticacao } from "../../seguranca/trataErroAutenticacao";
+import { getUsuario } from "../../seguranca/Autenticacao";
 
 const GENEROS = ["Ação", "Aventura", "Comédia", "Drama", "Ficção Científica", "Terror", "Romance", "Animação", "Documentário", "Suspense"];
 const EMPTY = { titulo: "", lancamento: "", genero: "" };
 
 const Filmes = () => {
-    // Importamos fetchFilmes
+    const usuario = getUsuario();
     const { filmes, loading, error, fetchFilmes } = useContext(FilmesContext);
 
     const [show, setShow] = useState(false);
@@ -74,6 +75,11 @@ const Filmes = () => {
     }
 
     async function handleDelete() {
+        if (usuario.tipo !== 'A') {
+            alert("Apenas administradores podem excluir registros.");
+            return;
+        }
+
         setDeleting(true);
         try {
             await deleteFilmePorIdAPI(deletingId);
@@ -125,9 +131,11 @@ const Filmes = () => {
                                     <Button size="sm" variant="outline-secondary" className="me-1" onClick={() => openEdit(f)}>
                                         <i className="bi bi-pencil" />
                                     </Button>
-                                    <Button size="sm" variant="outline-danger" onClick={() => openDelete(f.id)}>
-                                        <i className="bi bi-trash" />
-                                    </Button>
+                                    {usuario?.tipo === 'A' && (
+                                        <Button size="sm" variant="outline-danger" onClick={() => openDelete(f.id)}>
+                                            <i className="bi bi-trash" />
+                                        </Button>
+                                    )}
                                 </td>
                             </tr>
                         ))}

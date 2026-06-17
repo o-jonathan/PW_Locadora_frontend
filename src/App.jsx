@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router';
 import MenuPublico from './components/MenuPublico';
 import MenuPrivado from './components/MenuPrivado';
 import Login from './components/tabs/login';
+import Cadastro from './components/tabs/cadastro';
 import Menu from './components/menu';
 import Home from './components/tabs/home';
 import Clientes from './components/tabs/clientes';
@@ -16,6 +17,7 @@ import Locacoes from './components/tabs/locacoes';
 import { ClientesProvider } from './components/context/clientesContext';
 import { FilmesProvider } from './components/context/filmesContext';
 import { LocacoesProvider } from './components/context/locacoesContext';
+import MeuPerfil from './components/tabs/meuperfil';
 
 const router = createBrowserRouter([
     {
@@ -28,13 +30,17 @@ const router = createBrowserRouter([
             },
             {
                 path: "/login",
-                element: <Login/>
+                element: <Login />
+            },
+            {
+                path: "/cadastro",
+                element: <Cadastro />
             }
         ]
     },
     {
         path: "/privado",
-        element: <MenuPrivado/>,
+        element: <MenuPrivado />,
         children: [
             {
                 index: true,
@@ -51,6 +57,10 @@ const router = createBrowserRouter([
             {
                 path: "locacoes",
                 element: <Locacoes />
+            },
+            {
+                path: "meuperfil",
+                element: <MeuPerfil />
             }
         ]
     }

@@ -11,6 +11,7 @@ const MenuPublico = () => (
                 </Nav>
                 <Nav variant="pills">
                     <NavLink className="nav-link" to="/login"><i className="bi bi-person-fill" /> Login</NavLink>
+                    <NavLink className="nav-link" to="/cadastro"><i className="bi bi-person-plus-fill" /> Cadastro</NavLink>
                 </Nav>
             </Container>
         </Navbar>

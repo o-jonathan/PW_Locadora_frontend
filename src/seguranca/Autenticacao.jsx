@@ -1,6 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 
-const NOMEAPP = 'eshoppw';
+const NOMEAPP = 'locadorapw';
 
 export const getToken = () => {
     const localStorageAutenticacao = localStorage.getItem(NOMEAPP + '/autenticacao');

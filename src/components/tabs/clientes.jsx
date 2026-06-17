@@ -5,11 +5,12 @@ import { postClienteAPI, putClienteAPI, deleteClientePorIdAPI } from "../../serv
 import WithAuth from "../../seguranca/WithAuth";
 import { useNavigate } from "react-router-dom";
 import { trataErroAutenticacao } from "../../seguranca/trataErroAutenticacao";
+import { getUsuario } from "../../seguranca/Autenticacao";
 
 const EMPTY = { nome: "", email: "" };
 
 const Clientes = () => {
-    // Importamos fetchClientes em vez de setClientes
+    const usuario = getUsuario();
     const { clientes, loading, error, fetchClientes } = useContext(ClientesContext);
 
     const [show, setShow] = useState(false);
@@ -73,6 +74,11 @@ const Clientes = () => {
     }
 
     async function handleDelete() {
+        if (usuario.tipo !== 'A') {
+            alert("Apenas administradores podem excluir registros.");
+            return;
+        }
+
         setDeleting(true);
         try {
             await deleteClientePorIdAPI(deletingId);
@@ -122,9 +128,11 @@ const Clientes = () => {
                                     <Button size="sm" variant="outline-secondary" className="me-1" onClick={() => openEdit(c)}>
                                         <i className="bi bi-pencil" />
                                     </Button>
-                                    <Button size="sm" variant="outline-danger" onClick={() => openDelete(c.id)}>
-                                        <i className="bi bi-trash" />
-                                    </Button>
+                                    {usuario?.tipo === 'A' && (
+                                        <Button size="sm" variant="outline-danger" onClick={() => openDelete(c.id)}>
+                                            <i className="bi bi-trash" />
+                                        </Button>
+                                    )}
                                 </td>
                             </tr>
                         ))}
